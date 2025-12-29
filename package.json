@@ -1,0 +1,42 @@
+{
+  "name": "movie-service-webbylab",
+  "type": "commonjs",
+  "version": "1.0.0",
+  "description": "Movie service exercise application for WebbyLab",
+  "main": "main.js",
+  "scripts": {
+    "build": "tsc && npm prune --omit=dev",
+    "start": "node ./dist/main",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.10.1",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "globals": "^16.5.0",
+    "jiti": "^2.6.1",
+    "prettier": "3.7.4",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.1"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "express-zod-safe": "^3.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.0.2",
+    "pino": "^10.1.0",
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7",
+    "zod": "^4.2.1"
+  }
+}
