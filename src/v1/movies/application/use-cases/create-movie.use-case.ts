@@ -1,10 +1,10 @@
 import { CreateMovieInput } from '../../domain/entities/create-movie.input';
-import { MoviesRepository } from '../../infrastructure/repositories/movies.repositories';
-
+import { Movie } from '../../domain/entities/movie';
+import { AbstractMoviesRepository } from '../../domain/repositories/movies.repository';
 export class CreateMovieUseCase {
-  constructor(private readonly moviesRepository: MoviesRepository) {}
+  constructor(private readonly moviesRepository: AbstractMoviesRepository) {}
 
-  async execute(input: CreateMovieInput): Promise<void> {
-    await this.moviesRepository.create(input);
+  async execute(input: CreateMovieInput): Promise<Movie> {
+    return this.moviesRepository.create(input);
   }
 }

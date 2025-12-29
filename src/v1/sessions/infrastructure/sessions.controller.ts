@@ -2,7 +2,7 @@ import { Router } from 'express';
 import validate from 'express-zod-safe';
 
 import { UsersRepository } from '../../users/infrastructure/repositories/users.repository';
-import { VerifyUserByEmailUseCases } from '../../users/application/use-cases/verify-user-by-email.use-case';
+import { VerifyUserByEmailUseCase } from '../../users/application/use-cases/verify-user-by-email.use-case';
 
 import { config } from '../../../config';
 import { sendApi } from '../../../shared/helpers/send-api.helper';
@@ -16,7 +16,7 @@ export function createSessionsController() {
   const router = Router();
 
   const usersRepository = new UsersRepository();
-  const verifyUserByEmail = new VerifyUserByEmailUseCases(usersRepository);
+  const verifyUserByEmail = new VerifyUserByEmailUseCase(usersRepository);
 
   const tokenIssuer = new JwtTokenIssuer(config.api.accessTokenSecret ?? 'dev-secret', '1h');
   const issueAccessToken = new IssueAccessTokenUseCase(tokenIssuer);

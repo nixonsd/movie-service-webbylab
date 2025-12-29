@@ -1,8 +1,7 @@
 import { NotFoundError } from '../../../../shared/errors/app-error';
-import { MoviesRepository } from '../../infrastructure/repositories/movies.repositories';
-
+import { AbstractMoviesRepository } from '../../domain/repositories/movies.repository';
 export class DeleteMovieUseCase {
-  constructor(private moviesRepository: MoviesRepository) {}
+  constructor(private moviesRepository: AbstractMoviesRepository) {}
 
   async execute(id: string): Promise<void> {
     const movie = await this.moviesRepository.findById(id);
