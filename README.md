@@ -20,7 +20,6 @@ A minimal REST API for managing movies, intended for development and technical e
 A prebuilt Docker image is available on Docker Hub, so no local build is required.
 
 ```bash
-docker pull nixonsd/movie-service:latest
 docker run -d \
   --name movie-service \
   -p 8000:8000 \
