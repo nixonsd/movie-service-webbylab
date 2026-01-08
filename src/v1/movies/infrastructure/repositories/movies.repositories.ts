@@ -59,7 +59,14 @@ export class MoviesRepository implements AbstractMoviesRepository {
 
     const sortField = options.sort === 'title' ? 'title' : options.sort === 'year' ? 'year' : 'id';
     const sortDir = (options.order ?? 'ASC') as 'ASC' | 'DESC';
-    const order: Order = [[sortField, sortDir]];
+
+    const order: Order =
+      sortField === 'title'
+        ? [
+            ['titleSort', sortDir],
+            ['id', 'ASC'],
+          ]
+        : [[sortField, sortDir]];
 
     const rows = await MovieModel.findAll({
       where,

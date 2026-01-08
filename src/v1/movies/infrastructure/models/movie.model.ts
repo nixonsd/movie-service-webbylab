@@ -1,4 +1,5 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
+import { makeUaSortKey } from '../../../../shared/helpers/make-ua-sort-key.helper';
 
 export class MovieModel extends Model {
   declare id: string;
@@ -6,6 +7,7 @@ export class MovieModel extends Model {
   declare year: number;
   declare format: string;
   declare actors: string; // stored as JSON string
+  declare titleSort: string;
 
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
@@ -39,6 +41,11 @@ export function initMovieModel(sequelize: Sequelize): typeof MovieModel {
         type: DataTypes.TEXT, // JSON string in SQLite
         allowNull: false,
       },
+      titleSort: {
+        type: DataTypes.STRING(1024),
+        allowNull: false,
+        defaultValue: '',
+      },
     },
     {
       sequelize,
@@ -52,6 +59,12 @@ export function initMovieModel(sequelize: Sequelize): typeof MovieModel {
       ],
     }
   );
+
+  MovieModel.beforeValidate((movie) => {
+    if (typeof movie.title === 'string') {
+      movie.titleSort = makeUaSortKey(movie.title);
+    }
+  });
 
   return MovieModel;
 }
