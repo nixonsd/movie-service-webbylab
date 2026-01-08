@@ -1,10 +1,11 @@
-import { Op, Order, WhereOptions } from 'sequelize';
+import { Op, Order, UniqueConstraintError, WhereOptions } from 'sequelize';
 import { CreateMovieInput } from '../../domain/entities/create-movie.input';
 import { FindMoviesFilter } from '../../domain/entities/find-movie.filter';
 import { Movie } from '../../domain/entities/movie';
 import { AbstractMoviesRepository } from '../../domain/repositories/movies.repository';
 import { MovieModel } from '../models/movie.model';
 import { FindManyOptions } from '../../domain/entities/find-many.options';
+import { ConflictError } from '../../../../shared/errors/app-error';
 
 type MovieRow = {
   id: string;
@@ -16,14 +17,21 @@ type MovieRow = {
 
 export class MoviesRepository implements AbstractMoviesRepository {
   async create(input: CreateMovieInput): Promise<Movie> {
-    const created = await MovieModel.create({
-      title: input.title,
-      year: input.year,
-      format: input.format,
-      actors: JSON.stringify(input.actors),
-    });
+    try {
+      const created = await MovieModel.create({
+        title: input.title,
+        year: input.year,
+        format: input.format,
+        actors: JSON.stringify(input.actors),
+      });
 
-    return this.toDomain(created.get({ plain: true }) as MovieRow);
+      return this.toDomain(created.get({ plain: true }) as MovieRow);
+    } catch (e) {
+      if (e instanceof UniqueConstraintError) {
+        throw new ConflictError('Movie already exists', 'MOVIE_ALREADY_EXISTS');
+      }
+      throw e;
+    }
   }
 
   async findManyByFilter(filter: FindMoviesFilter = {}, options: FindManyOptions = {}): Promise<Movie[]> {

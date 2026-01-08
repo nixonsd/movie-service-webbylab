@@ -1,9 +1,12 @@
 import z from 'zod';
+import { hasMxRecord } from '../../../../shared/helpers/mx-check.helper';
 
 export const CreateUserSchema = z
   .object({
     name: z.string().trim().min(3).max(30),
-    email: z.email(),
+    email: z.email().refine(async (email) => hasMxRecord(email), {
+      message: 'Email domain has no MX records',
+    }),
     password: z.string().trim().min(6).max(100),
     confirmPassword: z.string().trim().min(6).max(100),
   })

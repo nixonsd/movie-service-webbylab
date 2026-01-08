@@ -44,6 +44,12 @@ export function initMovieModel(sequelize: Sequelize): typeof MovieModel {
       sequelize,
       tableName: 'movies',
       timestamps: true,
+      indexes: [
+        {
+          unique: true,
+          fields: ['title', 'year'],
+        },
+      ],
     }
   );
 
